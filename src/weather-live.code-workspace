@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "../.."
+		},
+		{
+			"name": "weather-live",
+			"path": ".."
+		}
+	],
+	"settings": {}
+}
