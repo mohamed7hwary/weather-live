@@ -12,34 +12,43 @@ SensorReadings readings;
 WebPage page(&readings);
 
 // Handle root url (/)
-void handleRoot() {
+void handleRoot()
+{
   readings.updateStatus();
   server.send(200, "text/html", page.getHTML());
 }
 
-void setup() {
-  Serial.begin(115200); 
-    WiFiManager wm;
+void setup()
+{
+  Serial.begin(115200);
+  WiFiManager wm;
 
-   
-    bool res;
-    res = wm.autoConnect("Weather-live","password"); // password protected ap
+  bool res;
+  res = wm.autoConnect("Weather-live", "password"); // password protected ap
 
-    if(!res) {
-        Serial.println("Failed to connect");
-        // ESP.restart();
-    } 
-    else {
-        //if you get here you have connected to the WiFi    
-        Serial.println("connected.... :)");
-    }
+  if (!res)
+  {
+    Serial.println("Failed to connect");
+    // ESP.restart();
+  }
+  else
+  {
+    // if you get here you have connected to the WiFi
+    Serial.println("connected.... :)");
+  }
   Serial.println(WiFi.localIP());
 
   server.on("/", handleRoot);
+  server.on("/soil", HTTP_GET, []()
+            { server.send(200, "application/json", readings.getSoilDataAsJson()); });
+  server.on("/gas", HTTP_GET, []()
+            { server.send(200, "application/json", readings.getGasDataAsJson()); });
+
   server.begin();
   Serial.println("HTTP server started");
 }
 
-void loop() {
+void loop()
+{
   server.handleClient();
 }

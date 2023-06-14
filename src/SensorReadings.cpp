@@ -1,4 +1,6 @@
+#include "Arduino.h"
 #include "SensorReadings.h"
+#include <ArduinoJson.h>
 
 SensorReadings::SensorReadings() {
   pinMode(SOIL_PIN, INPUT);
@@ -44,4 +46,21 @@ int SensorReadings::getGasValue() {
 
 String SensorReadings::getSoilStatus() {
   return soilStatus;
+}
+
+String SensorReadings::getSoilDataAsJson() {
+    StaticJsonDocument<100> doc;
+    doc["value"] = getSoilValue();
+    doc["status"] = getSoilStatus();
+    String json;
+    serializeJson(doc, json);
+    return json;
+}
+
+String SensorReadings::getGasDataAsJson() {
+    StaticJsonDocument<100> doc;
+    doc["value"] = getGasValue();
+    String json;
+    serializeJson(doc, json);
+    return json;
 }

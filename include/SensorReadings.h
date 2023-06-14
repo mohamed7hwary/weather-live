@@ -16,6 +16,8 @@ class SensorReadings {
     int getSoilValue();
     int getGasValue();
     String getSoilStatus();
+    String getSoilDataAsJson();
+    String getGasDataAsJson();
 
   private:
     int soilValue;
